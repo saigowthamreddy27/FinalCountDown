@@ -1,18 +1,32 @@
 
 
-export default function Result({ref, result, targetTime }) {
+import { useImperativeHandle, useRef } from "react";
+ 
+const Result = ({ ref, result, targetTime }) => {
+  const dialog = useRef();
+ 
+  useImperativeHandle(ref, () => {
+    return {
+      open() {
+        dialog.current.showModal()
+      },
+    };
+  });
+ 
   return (
-    <dialog ref={ref} className="result-modal">
-      <h2>you {result}</h2>
+    <dialog ref={dialog} className="result-modal">
+      <h2>You {result}</h2>
       <p>
-        the target time was <strong>{targetTime} seconds</strong>
+        The target time was <strong>{targetTime}</strong> seconds.
       </p>
       <p>
-        you stopped the timer with <strong>x seconds left</strong>
+        You stopped the timer with <strong> X seconds left</strong>
       </p>
       <form method="dialog">
-        <button>Close</button>
+        <button> Close</button>
       </form>
     </dialog>
   );
-}
+};
+ 
+export default Result;
