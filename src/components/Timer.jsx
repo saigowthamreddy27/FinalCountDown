@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
+import Result from "./Result";
 
 export default function TimerChallange({ title, targetTime }) {
   const timer = useRef();
+  const dialog =useRef(); 
 
   const [timeStarted, setTimeStarted] = useState(false);
   const [timeEnded, setTimeEnded] = useState(false);
@@ -9,6 +11,7 @@ export default function TimerChallange({ title, targetTime }) {
     setTimeStarted(true);
     timer.current = setTimeout(() => {
       setTimeEnded(true);
+      dialog.current?.showModal();
     }, targetTime * 1000);
   }
 
@@ -17,6 +20,8 @@ export default function TimerChallange({ title, targetTime }) {
   }
 
   return (
+    <>
+    {<Result ref={dialog} targetTime={targetTime} result='lost' /> }
     <section className="challenge">
       <h2>{title}</h2>
       {timeEnded && <p>you lost</p>}
@@ -32,5 +37,6 @@ export default function TimerChallange({ title, targetTime }) {
         {timeStarted ? "time is running" : " time inactive"} /
       </p>
     </section>
+    </>
   );
 }
